@@ -1,0 +1,6 @@
+/Users/jux/Desktop/Avidian/backend/obj/Debug/netcoreapp3.1/backend.csproj.AssemblyReference.cache
+/Users/jux/Desktop/Avidian/backend/obj/Debug/netcoreapp3.1/backend.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jux/Desktop/Avidian/backend/obj/Debug/netcoreapp3.1/backend.AssemblyInfoInputs.cache
+/Users/jux/Desktop/Avidian/backend/obj/Debug/netcoreapp3.1/backend.AssemblyInfo.cs
+/Users/jux/Desktop/Avidian/backend/obj/Debug/netcoreapp3.1/backend.csproj.CoreCompileInputs.cache
+/Users/jux/Desktop/Avidian/backend/obj/Debug/netcoreapp3.1/backend.MvcApplicationPartsAssemblyInfo.cache
