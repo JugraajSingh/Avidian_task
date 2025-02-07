@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
+using backend.Services;
 using System;
+using System.Text.Json;
 
 namespace backend
 {
@@ -20,12 +22,39 @@ namespace backend
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.WriteIndented = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+                });
 
-            // Configure the database context to use MySQL
-            services.AddDbContext<TodoContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), 
-                new MySqlServerVersion(new Version(8, 0, 21))));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var serverVersion = ServerVersion.AutoDetect(connectionString);
+
+            services.AddDbContextPool<TodoContext>(options =>
+                options.UseMySql(connectionString, serverVersion)
+                    .EnableSensitiveDataLogging(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                    .EnableDetailedErrors(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development"));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DevelopmentPolicy",
+                    builder => builder
+                        .WithOrigins("http://localhost:5174")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+
+                options.AddPolicy("ProductionPolicy",
+                    builder => builder
+                        .WithOrigins("http://your-production-url")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
+            services.AddScoped<ITodoService, TodoService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,12 +74,22 @@ namespace backend
 
             app.UseRouting();
 
+            app.UseCors(env.IsDevelopment() ? "DevelopmentPolicy" : "ProductionPolicy");
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            if (env.IsDevelopment())
+            {
+                using var scope = app.ApplicationServices.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<TodoContext>();
+                dbContext.Database.Migrate();
+            }
         }
     }
 }

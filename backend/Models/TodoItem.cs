@@ -1,12 +1,15 @@
-// filepath: /Users/jux/Desktop/Avidian/backend/Models/TodoItem.cs
 namespace backend.Models
 {
     public class TodoItem
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public string Priority { get; set; }
-        public string Category { get; set; }
-        public bool Status { get; set; }
+        public int Id { get; set; } // Changed to int
+        public string Title { get; set; } = string.Empty; // Initialized with default value
+        public string Description { get; set; } = string.Empty; // Initialized with default value
+        public string Status { get; set; } = "todo"; // Initialized with default value
+        public string Priority { get; set; } = "low"; // Initialized with default value
+        public string CategoryId { get; set; } = string.Empty; // Initialized with default value
+        public DateTime DueDate { get; set; } = DateTime.UtcNow; // Initialized with default value
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // Initialized with default value
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow; // Initialized with default value
     }
 }

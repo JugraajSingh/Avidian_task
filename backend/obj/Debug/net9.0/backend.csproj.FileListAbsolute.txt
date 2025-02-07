@@ -170,3 +170,6 @@
 /Users/jux/Desktop/Avidian/backend/bin/Debug/net9.0/MySql.EntityFrameworkCore.dll
 /Users/jux/Desktop/Avidian/backend/bin/Debug/net9.0/MySqlConnector.dll
 /Users/jux/Desktop/Avidian/backend/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.dll
+/Users/jux/Desktop/Avidian/backend/bin/Debug/net9.0/package-lock.json
+/Users/jux/Desktop/Avidian/backend/bin/Debug/net9.0/package.json
+/Users/jux/Desktop/Avidian/backend/obj/Debug/net9.0/backend.sourcelink.json
